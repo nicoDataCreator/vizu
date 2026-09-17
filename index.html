@@ -3,6 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        try {
+          var originalFetch = window.fetch ? window.fetch.bind(window) : null;
+          var currentFetch = originalFetch;
+          Object.defineProperty(window, 'fetch', {
+            configurable: true,
+            enumerable: true,
+            get: function() { return currentFetch; },
+            set: function(fn) { currentFetch = fn; }
+          });
+        } catch(e) {}
+      })();
+    </script>
     <title>Estratega de Planificación Anual 360°</title>
     <meta name="description" content="Visualizador mental y estratega financiero para proyectar tu año en tres escenarios clave, integrado con Google Sheets, Drive y Calendar." />
     <meta property="og:title" content="Estratega de Planificación Anual 360°" />
