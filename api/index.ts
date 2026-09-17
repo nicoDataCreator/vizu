@@ -91,8 +91,11 @@ Analiza la respuesta del usuario, extrae las magnitudes numéricas o cualitativa
       },
     });
 
-    const text = response.text || "{}";
-    let parsed = {};
+    let text = response.text || "{}";
+    if (text.includes("```")) {
+      text = text.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
+    }
+    let parsed: any = {};
     try {
       parsed = JSON.parse(text);
     } catch {
@@ -193,8 +196,60 @@ Genera el reporte 360° con matemática coherente basada en sus ingresos y gasto
       },
     });
 
-    const text = response.text || "{}";
-    const parsed = JSON.parse(text);
+    let text = response.text || "{}";
+    if (text.includes("```")) {
+      text = text.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
+    }
+    let parsed: any = {};
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      parsed = {
+        ideal: {
+          name: "Año Positivo (Ideal)",
+          annualRevenue: (financialData.monthlyIncome || 3000) * 12 * 1.25,
+          annualExpenses: (financialData.monthlyFixedExpenses || 1500) * 12,
+          netSavings: ((financialData.monthlyIncome || 3000) * 12 * 1.25) - ((financialData.monthlyFixedExpenses || 1500) * 12),
+          growthPct: 25,
+          narrative: "Año de consolidación, ejecución disciplinada de metas y optimización de flujo sin fricciones.",
+          keyMilestones: [
+            { quarter: "Q1", title: "Lanzamiento y Ajuste", target: "Asegurar clientes iniciales y fijar estructura de costes" },
+            { quarter: "Q2", title: "Escalamiento", target: "Aumentar un 20% la facturación recurrente" },
+            { quarter: "Q3", title: "Experiencias y Viajes", target: "Presupuesto de desconexión sin comprometer el colchón" },
+            { quarter: "Q4", title: "Cierre y Balance 360", target: "Superar el objetivo anual de ahorro y reinversión" }
+          ]
+        },
+        crash: {
+          name: "Año Realista (Con Crash a Mitad de Año)",
+          crashEvent: "Pérdida de cliente principal o caída temporal de ventas en mes 6",
+          crashMonth: "Mes 6",
+          impactRevenueDropPct: 30,
+          annualRevenue: (financialData.monthlyIncome || 3000) * 12 * 0.85,
+          annualExpenses: (financialData.monthlyFixedExpenses || 1500) * 12 * 0.9,
+          netCashflow: ((financialData.monthlyIncome || 3000) * 12 * 0.85) - ((financialData.monthlyFixedExpenses || 1500) * 12 * 0.9),
+          runwayMonthsLeft: financialData.emergencyFundMonths || 3,
+          contingencyActions: [
+            "Activar protocolo de congelamiento de gastos variables en las primeras 48h.",
+            "Recurrir al fondo de emergencia sin liquidar activos de largo plazo.",
+            "Lanzar oferta de contingencia a base de clientes existente."
+          ],
+          narrative: "El imprevisto impacta el flujo en junio, pero el colchón preexistente y recortes inmediatos absorben el shock sin endeudamiento tóxico."
+        },
+        crisisManagement: {
+          name: "Gestión de Crisis, Inversión & Crédito",
+          recommendedFinancing: financialData.debtVsReinvestStrategy === "credit" ? "credit" : "bootstrap",
+          creditRecommendation: "Solo apalancarse si la tasa efectiva es menor a la mitad del ROI esperado del proyecto.",
+          investmentAllocation: "70% a fondo de seguridad y reinversión orgánica, 30% a iniciativas de expansión.",
+          immediateCuts: ["Suscripciones y licencias no esenciales", "Presupuesto de ocio/viajes diferibles", "Servicios tercerizados secundarios"],
+          roiThreshold: "Mínimo 2.5x sobre el capital asignado en un horizonte de 6 meses.",
+          immediateActionPlan: [
+            "Fijar auditoría semanal de gastos fijos.",
+            "Blindar mínimo 3 a 6 meses de costos esenciales en cuenta separada.",
+            "Validar tracción de nuevas fuentes de ingreso antes de comprometer deuda."
+          ]
+        }
+      };
+    }
 
     res.json({
       success: true,
