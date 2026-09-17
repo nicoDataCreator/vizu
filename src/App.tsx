@@ -120,7 +120,12 @@ export default function App() {
 
   // Initialize App and ask Question 1 immediately
   useEffect(() => {
-    // Load config from server
+    // Load config from server or Vite client env
+    const clientEnvId = (import.meta as any).env?.VITE_GOOGLE_CLIENT_ID;
+    if (clientEnvId) {
+      setGoogleClientId(clientEnvId);
+    }
+
     fetch('/api/config')
       .then((res) => res.json())
       .then((data) => {
