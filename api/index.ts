@@ -22,7 +22,7 @@ function getGenAI(): GoogleGenAI {
 
 // Config endpoint to return OAuth Client ID and app status safely
 app.get("/api/config", (req, res) => {
-  const clientId = process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID || "";
+  const clientId = process.env.GOOGLE_CLIENT_ID || "";
   res.json({
     hasGeminiKey: Boolean(process.env.GEMINI_API_KEY),
     googleClientId: clientId,

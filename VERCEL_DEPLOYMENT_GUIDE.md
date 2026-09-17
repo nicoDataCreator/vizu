@@ -6,14 +6,15 @@ Esta aplicación funciona tanto en el entorno de desarrollo como en **Vercel** u
 
 ## 1. Variables de Entorno en Vercel (Project Settings -> Environment Variables)
 
-Configura las siguientes variables en tu panel de Vercel:
+Todas las variables son **estrictamente secretas** en el servidor de Vercel (sin ningún prefijo `VITE_` que las exponga en el navegador):
 
-| Variable | Descripción | Dónde obtenerla |
-| :--- | :--- | :--- |
-| `GEMINI_API_KEY` | Clave de API de Google Gemini para ejecutar el modelo de alta reflexión (`gemini-3.1-pro-preview`). | [Google AI Studio](https://aistudio.google.com/app/apikey) |
-| `GOOGLE_CLIENT_ID` | Client ID de OAuth 2.0 de Google Cloud para Google Drive, Sheets y Calendar. | Google Cloud Console -> APIs & Services -> Credentials |
-| `VITE_GOOGLE_CLIENT_ID` | El mismo Client ID de Google OAuth para disponibilidad instantánea en el frontend cliente. | Google Cloud Console |
-| `APP_URL` | La URL de producción de Vercel (ej: `https://tu-proyecto.vercel.app`). | Panel de Vercel tras crear el proyecto |
+| Variable | Tipo | Descripción | Dónde obtenerla |
+| :--- | :--- | :--- | :--- |
+| `GEMINI_API_KEY` | **Secreta (Server-side)** | Clave de API de Google Gemini para ejecutar el modelo de alta reflexión (`gemini-3.1-pro-preview`). **Nunca se envía al navegador.** | [Google AI Studio](https://aistudio.google.com/app/apikey) |
+| `GOOGLE_CLIENT_ID` | **Secreta (Server-side)** | Client ID de OAuth 2.0 de Google Cloud para interactuar con Drive, Sheets y Calendar. Servido de forma protegida vía `/api/config`. | Google Cloud Console -> Credentials |
+| `APP_URL` | **Configuración** | La URL de producción de Vercel (ej: `https://tu-proyecto.vercel.app`). | Panel de Vercel |
+
+> 🔒 **Seguridad Total**: Ninguna clave o token se incrusta en el código fuente ni en el bundle compilado. El frontend consulta dinámicamente `/api/config` al backend, manteniendo todo aislado en las variables de entorno del servidor.
 
 ---
 
