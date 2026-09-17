@@ -1,0 +1,6 @@
+{
+  "name": "Estratega de Planificación Anual 360°",
+  "description": "Visualizador mental y estratega financiero para proyectar tu año en tres escenarios clave, integrado con Google Sheets, Drive y Calendar.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
